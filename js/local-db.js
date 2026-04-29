@@ -94,6 +94,45 @@ export function createBloodRequest(patientName, contactNumber, hospitalName, blo
   return newRequest;
 }
 
+// ---- Profile Update ----
+
+export function updateUserProfile(uid, updates) {
+  const users = getCollection(DB_KEYS.USERS);
+  const index = users.findIndex(u => u.uid === uid);
+  if (index === -1) throw new Error('User not found.');
+
+  users[index] = { ...users[index], ...updates };
+  saveCollection(DB_KEYS.USERS, users);
+
+  // Update session name if changed
+  const session = getCurrentUser();
+  if (session && session.uid === uid) {
+    session.name = users[index].name;
+    session.role = users[index].role;
+    sessionStorage.setItem(DB_KEYS.CURRENT_USER, JSON.stringify(session));
+  }
+
+  return users[index];
+}
+
+export function getUserByUid(uid) {
+  const users = getCollection(DB_KEYS.USERS);
+  return users.find(u => u.uid === uid) || null;
+}
+
+// ---- Location Settings ----
+
+export function saveLocationSettings(uid, city, radius) {
+  const key = 'bloodconnect_location_' + uid;
+  localStorage.setItem(key, JSON.stringify({ city, radius }));
+}
+
+export function getLocationSettings(uid) {
+  const key = 'bloodconnect_location_' + uid;
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : { city: '', radius: 10 };
+}
+
 // ---- Data Retrieval (for Admin) ----
 
 export function getAllUsers() {

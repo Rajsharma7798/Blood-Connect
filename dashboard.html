@@ -6,6 +6,111 @@
   <title>Dashboard - Blood Connect</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* Request Cards */
+    .request-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 5px solid var(--primary-red);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+    }
+    .request-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .request-info h3 { margin-bottom: 0.3rem; }
+    .request-meta { color: var(--text-muted); font-size: 0.85rem; display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.4rem; }
+    .request-meta span { display: flex; align-items: center; gap: 0.3rem; }
+    .blood-badge {
+      background-color: #fee2e2; color: var(--primary-red);
+      padding: 0.5rem 1rem; border-radius: 20px;
+      font-weight: 700; font-size: 1.2rem; white-space: nowrap;
+    }
+    .urgency-badge {
+      display: inline-block; padding: 0.2rem 0.6rem; border-radius: 6px;
+      font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    }
+    .urgency-immediate { background: #fee2e2; color: #dc2626; }
+    .urgency-today { background: #fef3c7; color: #d97706; }
+    .urgency-scheduled { background: #dbeafe; color: #2563eb; }
+    .empty-state {
+      text-align: center; padding: 3rem; color: var(--text-muted);
+      background: var(--white); border-radius: 12px; box-shadow: var(--shadow-sm);
+    }
+    .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
+
+    /* Profile Section */
+    .profile-card {
+      background: var(--white); border-radius: 16px;
+      box-shadow: var(--shadow-sm); padding: 2rem; max-width: 600px;
+    }
+    .profile-header {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);
+    }
+    .profile-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-red), #ff6b6b);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: white; font-weight: 700;
+    }
+    .profile-form .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    @media (max-width: 600px) {
+      .profile-form .form-row { grid-template-columns: 1fr; }
+    }
+    .profile-form .form-group { margin-bottom: 1.2rem; }
+    .save-msg {
+      display: inline-block; margin-left: 1rem; color: #10b981;
+      font-weight: 600; opacity: 0; transition: opacity 0.3s;
+    }
+    .save-msg.show { opacity: 1; }
+
+    /* Location Section */
+    .location-card {
+      background: var(--white); border-radius: 16px;
+      box-shadow: var(--shadow-sm); padding: 2rem; max-width: 600px;
+    }
+    .location-card .form-group { margin-bottom: 1.5rem; }
+    .range-container { position: relative; }
+    .range-container input[type="range"] {
+      width: 100%; height: 8px; -webkit-appearance: none;
+      background: linear-gradient(to right, var(--primary-red) 0%, #ddd 0%);
+      border-radius: 4px; outline: none;
+    }
+    .range-container input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 22px; height: 22px;
+      background: var(--primary-red); border-radius: 50%; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(230,57,70,0.4);
+    }
+    .range-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;
+    }
+    .radius-value {
+      text-align: center; font-size: 2rem; font-weight: 700;
+      color: var(--primary-red); margin: 0.5rem 0;
+    }
+    .city-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.8rem;
+    }
+    .city-option {
+      padding: 0.8rem; border: 2px solid var(--border-color);
+      border-radius: 10px; text-align: center; cursor: pointer;
+      transition: var(--transition); font-weight: 500;
+    }
+    .city-option:hover { border-color: var(--light-blue); background: #f0f9ff; }
+    .city-option.selected {
+      border-color: var(--primary-red); background: #fee2e2; color: var(--primary-red);
+    }
+    .city-option .city-icon { font-size: 1.5rem; display: block; margin-bottom: 0.3rem; }
+  </style>
 </head>
 <body class="dashboard-body">
   <header class="navbar dashboard-nav">
@@ -19,10 +124,10 @@
   <div class="dashboard-container">
     <aside class="sidebar">
       <nav class="side-nav">
-        <a href="#" class="active" id="navFeed">Feed & Requests</a>
-        <a href="request-blood.html" id="navRequest">Request Blood</a>
-        <a href="#" id="navProfile">My Profile</a>
-        <a href="#" id="navLocation">Location Settings</a>
+        <a href="#" class="active" data-panel="feedPanel" id="navFeed">📋 Feed & Requests</a>
+        <a href="request-blood.html" id="navRequest">🩸 Request Blood</a>
+        <a href="#" data-panel="profilePanel" id="navProfile">👤 My Profile</a>
+        <a href="#" data-panel="locationPanel" id="navLocation">📍 Location Settings</a>
       </nav>
       
       <div class="status-card">
@@ -36,15 +141,140 @@
     </aside>
 
     <main class="dashboard-main">
-      <div class="dashboard-header">
-        <h2>Active Requests Near You</h2>
-        <button class="btn btn-primary" id="newRequestBtn">Create New Request</button>
+
+      <!-- ===== PANEL 1: Feed & Requests ===== -->
+      <div id="feedPanel" class="panel active">
+        <div class="dashboard-header">
+          <h2>Active Requests Near You</h2>
+          <button class="btn btn-primary" id="newRequestBtn">+ New Request</button>
+        </div>
+        <div class="requests-feed" id="requestsFeed">
+          <div class="loading-state">Fetching requests...</div>
+        </div>
       </div>
-      
-      <div class="requests-feed" id="requestsFeed">
-        <!-- JS will populate cards here -->
-        <div class="loading-state">Fetching real-time requests...</div>
+
+      <!-- ===== PANEL 2: My Profile ===== -->
+      <div id="profilePanel" class="panel">
+        <div class="dashboard-header">
+          <h2>My Profile</h2>
+        </div>
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">?</div>
+            <div>
+              <h3 id="profileDisplayName">Loading...</h3>
+              <p style="color: var(--text-muted);" id="profileRole">Donor</p>
+            </div>
+          </div>
+          <form class="profile-form" id="profileForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profName">Full Name</label>
+                <input type="text" id="profName" placeholder="Your full name">
+              </div>
+              <div class="form-group">
+                <label for="profEmail">Email</label>
+                <input type="email" id="profEmail" placeholder="you@example.com" disabled>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profPhone">Phone Number</label>
+                <input type="tel" id="profPhone" placeholder="+91 98765 43210">
+              </div>
+              <div class="form-group">
+                <label for="profAge">Age</label>
+                <input type="number" id="profAge" placeholder="25" min="18" max="65">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profGender">Gender</label>
+                <select id="profGender">
+                  <option value="">Select</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="profBloodType">Blood Type</label>
+                <select id="profBloodType">
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="profAddress">Address</label>
+              <input type="text" id="profAddress" placeholder="Street, Area, City">
+            </div>
+            <div class="form-group">
+              <label for="profMedical">Medical Notes (optional)</label>
+              <input type="text" id="profMedical" placeholder="e.g., Last donated 3 months ago">
+            </div>
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+            <span class="save-msg" id="profileSaveMsg">✓ Profile saved!</span>
+          </form>
+        </div>
       </div>
+
+      <!-- ===== PANEL 3: Location Settings ===== -->
+      <div id="locationPanel" class="panel">
+        <div class="dashboard-header">
+          <h2>Location Settings</h2>
+        </div>
+        <div class="location-card">
+          <div class="form-group">
+            <label><strong>Select Your City</strong></label>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.8rem;">Choose your city to find donors and requests nearby.</p>
+            <div class="city-grid" id="cityGrid">
+              <div class="city-option" data-city="pune">
+                <span class="city-icon">🏙️</span> Pune
+              </div>
+              <div class="city-option" data-city="mumbai">
+                <span class="city-icon">🌊</span> Mumbai
+              </div>
+              <div class="city-option" data-city="delhi">
+                <span class="city-icon">🕌</span> Delhi
+              </div>
+              <div class="city-option" data-city="bangalore">
+                <span class="city-icon">🌳</span> Bangalore
+              </div>
+              <div class="city-option" data-city="hyderabad">
+                <span class="city-icon">🏰</span> Hyderabad
+              </div>
+              <div class="city-option" data-city="chennai">
+                <span class="city-icon">🛕</span> Chennai
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 2rem;">
+            <label><strong>Search Radius</strong></label>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.8rem;">Set how far you'd like to search for donors or requests.</p>
+            <div class="radius-value"><span id="radiusValue">10</span> km</div>
+            <div class="range-container">
+              <input type="range" id="radiusSlider" min="1" max="50" value="10" step="1">
+              <div class="range-labels">
+                <span>1 km</span>
+                <span>25 km</span>
+                <span>50 km</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="saveLocationBtn" style="margin-top: 1.5rem;">Save Location Settings</button>
+          <span class="save-msg" id="locationSaveMsg">✓ Settings saved!</span>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -60,6 +290,6 @@
     </div>
   </div>
 
-  <script src="js/app.js" type="module"></script>
+  <script src="js/dashboard.js" type="module"></script>
 </body>
 </html>
