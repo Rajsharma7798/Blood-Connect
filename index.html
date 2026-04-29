@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blood Connect - Real-time Donor Matching</title>
+  <meta name="description" content="Connect blood donors with recipients in real-time. A PBL initiative by MIT-ADT.">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Blood<span>Connect</span></div>
+    <nav>
+      <button id="loginBtn" class="btn btn-outline">Login</button>
+      <button id="adminLoginBtn" class="btn btn-outline" style="border-color: #ff9800; color: #ff9800;">🔒 Admin</button>
+      <button id="registerBtn" class="btn btn-primary">Sign Up to Donate</button>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div class="hero-content">
+      <h1>Save lives with <br><span class="highlight">real-time matching.</span></h1>
+      <p>Bridge the gap between blood donors and recipients. Our system finds nearby available donors within seconds.</p>
+      <div class="cta-group">
+        <button class="btn btn-primary btn-large" id="heroRegisterBtn">Become a Donor</button>
+        <button class="btn btn-secondary btn-large" id="requestBloodBtn">Request Blood</button>
+      </div>
+    </div>
+    <div class="hero-image-slider">
+      <img src="assets/images/blood_cells.png" class="slide slide-1" alt="Blood Cells">
+      <img src="assets/images/donation_benefits.png" class="slide slide-2" alt="Donation Benefits">
+    </div>
+  </main>
+
+  <section class="features">
+    <div class="feature-card">
+      <div class="feature-icon">📍</div>
+      <h3>Real-time Tracking</h3>
+      <p>Connect with donors within a 10km radius using precise geolocation.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Instant Alerts</h3>
+      <p>Get notified instantly when a matching blood type request is posted nearby.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Secure Platform</h3>
+      <p>Your medical data and location are securely handled using Firebase infrastructure.</p>
+    </div>
+  </section>
+
+  <section class="events-section" style="padding: 4rem 5%; background-color: var(--secondary-bg); text-align: center;">
+    <h2>Upcoming & Past Events</h2>
+    <p>Join us in our mission to save lives. Check out our recent events and drives.</p>
+    <a href="events.html" class="btn btn-primary" style="margin-top: 1rem;">View Events</a>
+  </section>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal hidden">
+    <div class="modal-content glassmorphism">
+      <span class="close-btn">&times;</span>
+      <h2 id="modalTitle">Welcome Back</h2>
+      <form id="authForm">
+        <div class="form-group register-only hidden">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required placeholder="john@example.com">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required placeholder="••••••••">
+        </div>
+        <div class="form-group register-only hidden">
+          <label for="role">I am a:</label>
+          <select id="role">
+            <option value="donor">Blood Donor</option>
+            <option value="recipient">Recipient / Hospital</option>
+          </select>
+        </div>
+        <div class="form-group register-only hidden" id="bloodTypeGroup">
+          <label for="bloodType">Blood Type</label>
+          <select id="bloodType">
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary full-width" id="authSubmitBtn">Login</button>
+        <p class="auth-switch">
+          <span id="authSwitchText">Don't have an account? </span>
+          <a href="#" id="authSwitchLink">Sign up here</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div id="adminModal" class="modal hidden">
+    <div class="modal-content glassmorphism">
+      <span class="close-btn" id="adminCloseBtn">&times;</span>
+      <h2>🔒 Admin Login</h2>
+      <form id="adminForm">
+        <div class="form-group">
+          <label for="adminUser">Username</label>
+          <input type="text" id="adminUser" required placeholder="Admin">
+        </div>
+        <div class="form-group">
+          <label for="adminPass">Password</label>
+          <input type="password" id="adminPass" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary full-width">Login as Admin</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

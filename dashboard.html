@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Blood Connect</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+  <header class="navbar dashboard-nav">
+    <div class="logo">Blood<span>Connect</span></div>
+    <div class="user-controls">
+      <span id="userGreeting" class="user-greeting">Loading...</span>
+      <button id="logoutBtn" class="btn btn-outline btn-small">Logout</button>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <nav class="side-nav">
+        <a href="#" class="active" id="navFeed">Feed & Requests</a>
+        <a href="request-blood.html" id="navRequest">Request Blood</a>
+        <a href="#" id="navProfile">My Profile</a>
+        <a href="#" id="navLocation">Location Settings</a>
+      </nav>
+      
+      <div class="status-card">
+        <h4>Availability Status</h4>
+        <label class="toggle">
+          <input type="checkbox" id="availabilityToggle" checked>
+          <span class="slider round"></span>
+        </label>
+        <p id="availabilityText">Available to Donate</p>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <div class="dashboard-header">
+        <h2>Active Requests Near You</h2>
+        <button class="btn btn-primary" id="newRequestBtn">Create New Request</button>
+      </div>
+      
+      <div class="requests-feed" id="requestsFeed">
+        <!-- JS will populate cards here -->
+        <div class="loading-state">Fetching real-time requests...</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Real-time Match Notification Toast -->
+  <div id="toastContainer" class="toast-container hidden">
+    <div class="toast">
+      <div class="toast-icon">⚠️</div>
+      <div class="toast-content">
+        <h4>Match Found!</h4>
+        <p>A recipient needs O+ blood 2.5km away.</p>
+      </div>
+      <button class="toast-close">&times;</button>
+    </div>
+  </div>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

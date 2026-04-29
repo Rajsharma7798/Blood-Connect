@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Blood - Blood Connect</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .request-hero {
+      padding: 3rem 5%;
+      background: linear-gradient(135deg, var(--bg-color) 0%, #e0eaf5 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .request-hero img {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .request-container {
+      max-width: 800px;
+      margin: -2rem auto 4rem;
+      background: var(--white);
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      z-index: 10;
+    }
+
+    .grid-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    
+    .grid-form .full-space {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 768px) {
+      .grid-form {
+        grid-template-columns: 1fr;
+      }
+      .grid-form .full-space {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html" class="logo" style="text-decoration: none;">Blood<span>Connect</span></a>
+    <nav>
+      <a href="index.html" class="btn btn-outline">Back to Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="request-hero">
+      <img src="assets/images/blood_request_illustration.png" alt="Blood Donation Illustration">
+      <h1>Need Blood? <span class="highlight">We are here to help.</span></h1>
+      <p>Fill out the form below, and we will broadcast your request to available donors nearby in real-time.</p>
+    </section>
+
+    <div class="request-container">
+      <h2>Emergency Blood Request</h2>
+      <form id="emergencyRequestForm">
+        <div class="grid-form">
+          <div class="form-group">
+            <label for="patientName">Patient Name</label>
+            <input type="text" id="patientName" required placeholder="John Doe">
+          </div>
+          <div class="form-group">
+            <label for="contactNumber">Contact Number</label>
+            <input type="tel" id="contactNumber" required placeholder="+1 234 567 8900">
+          </div>
+          <div class="form-group full-space">
+            <label for="hospitalName">Hospital Name & Location</label>
+            <input type="text" id="hospitalName" required placeholder="City Hospital, Main Branch">
+          </div>
+          <div class="form-group">
+            <label for="reqBloodType">Blood Type Needed</label>
+            <select id="reqBloodType" required>
+              <option value="" disabled selected>Select an option</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="unitsNeeded">Units Needed</label>
+            <input type="number" id="unitsNeeded" required min="1" max="20" placeholder="e.g. 2">
+          </div>
+          <div class="form-group full-space">
+            <label for="urgency">Urgency Level</label>
+            <select id="urgency">
+              <option value="immediate">Immediate / Emergency</option>
+              <option value="today">Sometime Today</option>
+              <option value="scheduled">Scheduled for later</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary full-width btn-large" style="margin-top: 1.5rem;">Broadcast Request Now</button>
+      </form>
+    </div>
+  </main>
+
+  <script type="module">
+    import { createBloodRequest } from './js/local-db.js';
+
+    document.getElementById('emergencyRequestForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const patientName = document.getElementById('patientName').value;
+      const contactNumber = document.getElementById('contactNumber').value;
+      const hospitalName = document.getElementById('hospitalName').value;
+      const bloodType = document.getElementById('reqBloodType').value;
+      const unitsNeeded = document.getElementById('unitsNeeded').value;
+      const urgency = document.getElementById('urgency').value;
+
+      createBloodRequest(patientName, contactNumber, hospitalName, bloodType, unitsNeeded, urgency);
+      alert('Your request has been broadcasted successfully! Nearby donors are now being notified.');
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Blood Connect</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .admin-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 5%;
+    }
+    .table-container {
+      background: var(--surface-color, #ffffff);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 3rem;
+      overflow-x: auto;
+    }
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f4f4f4;
+      font-weight: 600;
+    }
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Blood<span>Connect</span> <small>(Admin)</small></div>
+    <nav>
+      <button id="logoutAdminBtn" class="btn btn-outline">Logout</button>
+    </nav>
+  </header>
+
+  <main class="admin-container">
+    <h1>Admin Dashboard</h1>
+    
+    <div class="table-container">
+      <div class="table-header">
+        <h2>Registered Users</h2>
+        <button id="exportUsersBtn" class="btn btn-primary">Export to CSV</button>
+      </div>
+      <table id="usersTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Blood Type</th>
+            <th>Registration Date/Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-container">
+      <div class="table-header">
+        <h2>Blood Requests</h2>
+        <button id="exportRequestsBtn" class="btn btn-primary">Export to CSV</button>
+      </div>
+      <table id="requestsTable">
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Blood Type</th>
+            <th>Required Units</th>
+            <th>Hospital</th>
+            <th>Status</th>
+            <th>Request Date/Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="js/admin.js" type="module"></script>
+</body>
+</html>
